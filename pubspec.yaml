@@ -1,0 +1,48 @@
+name: otwsyurga
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  intl: ^0.17.0  
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+  rename: ^3.0.2
+  flutter_lints: ^4.0.0
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png" # Pastikan path ini benar
+  min_sdk_android: 21
+  web:
+    generate: true
+    image_path: "assets/icon/icon.png" # Path ke ikon untuk web
+    background_color: "#FFFFFF"
+    theme_color: "#000000"
+  windows:
+    generate: true
+    image_path: "assets/icon/icon.png" # Path ke ikon untuk Windows
+    icon_size: 48
+  macos:
+    generate: true
+    image_path: "assets/icon/icon.png" # Path ke ikon untuk macOS
+
+flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/image/logomasjid.png 
+    - assets/icon/icon.png 
