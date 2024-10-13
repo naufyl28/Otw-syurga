@@ -1,7 +1,34 @@
 import 'package:flutter/material.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
+
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  bool _isObscured = true; // Menyembunyikan password secara default
+  bool _isConfirmObscured = true; // Menyembunyikan konfirmasi password
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  bool _isPasswordMatched = true;
+
+  @override
+  void dispose() {
+    // Bersihkan controller saat tidak digunakan
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  void _validatePassword() {
+    setState(() {
+      _isPasswordMatched =
+          _passwordController.text == _confirmPasswordController.text;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +77,47 @@ class RegisterScreen extends StatelessWidget {
                       decoration: const InputDecoration(labelText: 'Username'),
                     ),
                     TextField(
-                      decoration: const InputDecoration(labelText: 'Password'),
-                      obscureText: true,
+                      controller: _passwordController,
+                      obscureText: _isObscured, // Kontrol visibilitas password
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isObscured
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isObscured = !_isObscured;
+                            });
+                          },
+                        ),
+                      ),
                     ),
                     TextField(
-                      decoration:
-                          const InputDecoration(labelText: 'Confirm Password'),
-                      obscureText: true,
+                      controller: _confirmPasswordController,
+                      obscureText:
+                          _isConfirmObscured, // Kontrol visibilitas konfirmasi password
+                      decoration: InputDecoration(
+                        labelText: 'Confirm Password',
+                        errorText: _isPasswordMatched
+                            ? null
+                            : 'Passwords do not match',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isConfirmObscured
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isConfirmObscured = !_isConfirmObscured;
+                            });
+                          },
+                        ),
+                      ),
+                      onChanged: (value) => _validatePassword(),
                     ),
                     const SizedBox(height: 20),
                     // Menambahkan margin atas dan bawah pada tombol register
@@ -64,7 +125,10 @@ class RegisterScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/home');
+                          _validatePassword();
+                          if (_isPasswordMatched) {
+                            Navigator.pushNamed(context, '/home');
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue, // Warna tombol biru
