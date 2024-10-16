@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart'; // Import untuk TapGestureRecognizer
-
+import 'package:flutter/gestures.dart'; 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -12,48 +11,53 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isObscured = true;
 
   @override
-  Widget build(BuildContext context) {
+Widget build(BuildContext context) {
     return Scaffold(
-      // Background hijau di luar kotak putih
       body: Container(
-        color: Colors.green, // Warna background hijau
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              const Color.fromARGB(255, 4, 191, 116),
+              Colors.green.shade200,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Menambahkan kutipan di background hijau
               const Padding(
-                padding: EdgeInsets.only(
-                    bottom: 30.0), // Jarak antara kutipan dan logo
+                padding: EdgeInsets.only(bottom: 30.0),
                 child: Text(
                   'Salat adalah jembatan antara kita dan Allah',
                   style: TextStyle(
-                    fontSize: 18, // Ukuran font diperbesar
+                    fontSize: 18, 
                     fontStyle: FontStyle.italic,
-                    color: Colors.white, // Warna teks kutipan putih
+                    color: Colors.white, 
                   ),
-                  textAlign: TextAlign.center, // Menyelaraskan teks ke tengah
+                  textAlign: TextAlign.center, 
                 ),
               ),
               Container(
                 padding: const EdgeInsets.all(16.0),
                 margin: const EdgeInsets.symmetric(horizontal: 16.0),
                 decoration: BoxDecoration(
-                  color: Colors.white, // Warna background putih
+                  color: Colors.white, 
                   borderRadius: BorderRadius.circular(
-                      12.0), // Membuat kotak sudut melengkung
+                      12.0), 
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize
-                      .min, // Mengatur agar kolom menyesuaikan isinya
+                      .min, 
                   children: [
-                    // Menampilkan gambar logo
                     Image.asset(
                       'assets/image/logomasjid.png',
-                      height: 100, // Atur tinggi gambar sesuai kebutuhan
+                      height: 100, 
                     ),
-                    const SizedBox(height: 20), // Margin di bawah logo
-                    // Menampilkan teks OTWSYURGA
+                    const SizedBox(height: 20), 
+                    
                     const Text(
                       'OTWSYURGA',
                       style: TextStyle(
@@ -84,8 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    // Menambahkan margin atas dan bawah pada tombol login
+                    const SizedBox(height: 30),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: ElevatedButton(
@@ -93,19 +96,18 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.pushNamed(context, '/home');
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          foregroundColor: Colors.white,
-                          minimumSize: const Size(200, 50), // Ukuran tombol
+                          backgroundColor: const Color.fromARGB(255, 4, 231, 140),
+                          foregroundColor: const Color.fromARGB(255, 0, 0, 0),
+                          minimumSize: const Size(200, 50), 
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           textStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 18,
                           ),
                         ),
                         child: const Text('Login'),
                       ),
                     ),
-                    // Teks untuk pendaftaran dengan warna yang berbeda
                     RichText(
                       text: TextSpan(
                         children: [
@@ -113,14 +115,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             text: 'Belum mempunyai akun? ',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.black, // Warna teks hitam
+                              color: Colors.black, 
+                              fontSize:16,
                             ),
                           ),
                           TextSpan(
                             text: 'Daftar disini',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.blue, // Warna teks biru
+                              color: Color.fromARGB(255, 13, 197, 47), 
+                              fontSize: 16,
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {

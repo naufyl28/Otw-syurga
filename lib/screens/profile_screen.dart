@@ -5,74 +5,99 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Menggunakan informasi dummy untuk username dan total poin
-    String username = "Muhammad Naufal"; // Ganti dengan data nyata
-    int totalPoints = 100; // Ganti dengan data nyata
+    String username = "Muhammad Naufal";
+    int totalPoints = 100;
+
+    List<Map<String, dynamic>> previousPoints = [
+      {'date': '13 Oktober 2024', 'points': 40},
+      {'date': '12 Oktober 2024', 'points': 30},
+      {'date': '11 Oktober 2024', 'points': 30},
+    ];
 
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Home',
+          'Profile',
           style: TextStyle(
-            fontWeight: FontWeight.bold, // Mengatur teks Home menjadi bold
+            fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.green, // Mengatur warna AppBar
+        backgroundColor: const Color.fromARGB(255, 7, 216, 133),
       ),
       body: Container(
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.green.shade200, Colors.green.shade100],
+            colors: [
+              const Color.fromARGB(255, 7, 216, 133),
+              Colors.green.shade200,
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
         ),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Gambar profil
-              CircleAvatar(
-                radius: 70, // Mengatur radius gambar profil menjadi lebih besar
-                backgroundImage: AssetImage(
-                    'assets/image/profile.jpg'), // Ganti dengan gambar profil Anda
+          child: Card(
+            elevation: 8, 
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16), // Sudut bulat pada Card
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0), // Padding di dalam Card
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // Gambar profil
+                  CircleAvatar(
+                    radius: 70,
+                    backgroundImage: AssetImage('assets/image/profile.jpg'),
+                  ),
+                  const SizedBox(height: 20),
+                  // Username
+                  Text(
+                    username,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  // Total poin perolehan
+                  Text(
+                    'Total Poin: $totalPoints',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 20), 
+                  // List hari-hari sebelumnya
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: previousPoints.length,
+                      itemBuilder: (context, index) {
+                        final data = previousPoints[index];
+                        return Card(
+                          elevation: 2, // Bayangan untuk Card hari
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                10), // Sudut bulat pada Card
+                          ),
+                          margin: const EdgeInsets.only(
+                              bottom: 10), // Jarak antar card
+                          child: ListTile(
+                            leading: const Icon(Icons.calendar_today),
+                            title: Text(data['date']),
+                            subtitle: Text('Poin: ${data['points']}'),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
-              // Username
-              Text(
-                username,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              // Total poin perolehan
-              Text(
-                'Total Poin: $totalPoints',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight:
-                      FontWeight.bold, // Mengatur teks Total Poin menjadi bold
-                  color: Colors.grey,
-                ),
-              ),
-              const SizedBox(height: 40),
-              // Tombol kembali
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Back to Home'),
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                  backgroundColor: Colors.green, // Mengatur warna tombol
-                  foregroundColor: Colors.white, // Mengatur warna teks tombol
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

@@ -31,11 +31,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+Widget build(BuildContext context) {
     return Scaffold(
-      // Background hijau di luar kotak putih
       body: Container(
-        color: Colors.green, // Warna background hijau
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              const Color.fromARGB(255, 4, 191, 116),
+              Colors.green.shade200,
+            ],
+            begin: Alignment.topLeft, // Arah gradien
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: Stack(
           children: [
             Center(
@@ -131,14 +139,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue, // Warna tombol biru
+                          backgroundColor: const Color.fromARGB(255, 4, 231, 140), // Warna tombol biru
                           foregroundColor:
-                              Colors.white, // Warna teks tombol putih
+                              const Color.fromARGB(255, 0, 0, 0), // Warna teks tombol putih
                           minimumSize: const Size(200, 50), // Ukuran tombol
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           textStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 18,
                           ),
                         ),
                         child: const Text('Register'),
