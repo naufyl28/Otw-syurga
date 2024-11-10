@@ -1,17 +1,90 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart'; 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> {
   bool _isObscured = true;
+  final TextEditingController _usernameController =
+      TextEditingController(); // Treat as Email
+  final TextEditingController _passwordController = TextEditingController();
+  String? _errorMessage;
 
   @override
-Widget build(BuildContext context) {
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _login() async {
+    setState(() {
+      _errorMessage = null; // Clear previous error message
+    });
+
+    // Validasi jika email atau password kosong
+    if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
+      setState(() {
+        _errorMessage = 'Mohon isi email dan password';
+      });
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _usernameController.text, // Treat the username as email
+        password: _passwordController.text,
+      );
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        // Tampilkan pesan error khusus jika email atau password salah
+        if (e.code == 'user-not-found' ||
+            e.code == 'wrong-password' ||
+            e.code == 'invalid-email') {
+          _errorMessage = 'Email atau Password Anda salah';
+        } else {
+          _errorMessage = 'Email atau Password Anda salah.';
+        }
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Email atau Password Anda salah';
+      });
+    }
+  }
+
+  Future<void> _forgotPassword() async {
+    String email = _usernameController.text;
+    if (email.isEmpty) {
+      setState(() {
+        _errorMessage = 'Mohon isi email untuk reset password';
+      });
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      setState(() {
+        _errorMessage = 'Link reset password telah dikirim ke email Anda';
+      });
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        _errorMessage = 'Terjadi kesalahan: ${e.message}';
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -33,31 +106,28 @@ Widget build(BuildContext context) {
                 child: Text(
                   'Salat adalah jembatan antara kita dan Allah',
                   style: TextStyle(
-                    fontSize: 18, 
+                    fontSize: 18,
                     fontStyle: FontStyle.italic,
-                    color: Colors.white, 
+                    color: Colors.white,
                   ),
-                  textAlign: TextAlign.center, 
+                  textAlign: TextAlign.center,
                 ),
               ),
               Container(
                 padding: const EdgeInsets.all(16.0),
                 margin: const EdgeInsets.symmetric(horizontal: 16.0),
                 decoration: BoxDecoration(
-                  color: Colors.white, 
-                  borderRadius: BorderRadius.circular(
-                      12.0), 
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0),
                 ),
                 child: Column(
-                  mainAxisSize: MainAxisSize
-                      .min, 
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset(
                       'assets/image/logomasjid.png',
-                      height: 100, 
+                      height: 100,
                     ),
-                    const SizedBox(height: 20), 
-                    
+                    const SizedBox(height: 20),
                     const Text(
                       'OTWSYURGA',
                       style: TextStyle(
@@ -66,11 +136,16 @@ Widget build(BuildContext context) {
                       ),
                     ),
                     const SizedBox(height: 40),
-                    // Form login
+                    // Field Email
                     TextField(
-                      decoration: const InputDecoration(labelText: 'Username'),
+                      controller: _usernameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Email', // Use 'Email'
+                      ),
                     ),
+                    // Field Password
                     TextField(
+                      controller: _passwordController,
                       obscureText: _isObscured,
                       decoration: InputDecoration(
                         labelText: 'Password',
@@ -92,13 +167,12 @@ Widget build(BuildContext context) {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/home');
-                        },
+                        onPressed: _login, // Call the login function
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 4, 231, 140),
+                          backgroundColor:
+                              const Color.fromARGB(255, 4, 231, 140),
                           foregroundColor: const Color.fromARGB(255, 0, 0, 0),
-                          minimumSize: const Size(200, 50), 
+                          minimumSize: const Size(200, 50),
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           textStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
@@ -108,6 +182,30 @@ Widget build(BuildContext context) {
                         child: const Text('Login'),
                       ),
                     ),
+                    // Error message display
+                    if (_errorMessage != null)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          _errorMessage!,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    // Forgot Password link
+                    TextButton(
+                      onPressed: _forgotPassword,
+                      child: const Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
                     RichText(
                       text: TextSpan(
                         children: [
@@ -115,15 +213,15 @@ Widget build(BuildContext context) {
                             text: 'Belum mempunyai akun? ',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.black, 
-                              fontSize:16,
+                              color: Colors.black,
+                              fontSize: 16,
                             ),
                           ),
                           TextSpan(
                             text: 'Daftar disini',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 13, 197, 47), 
+                              color: Color.fromARGB(255, 13, 197, 47),
                               fontSize: 16,
                             ),
                             recognizer: TapGestureRecognizer()

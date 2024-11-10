@@ -13,39 +13,42 @@ dependencies:
   cupertino_icons: ^1.0.8
   intl: ^0.17.0  
   http: ^1.2.2
+  firebase_core: ^3.7.0  # Memperbarui ke versi yang kompatibel dengan cloud_firestore
+  firebase_auth: ^5.3.2  
+  cloud_firestore: ^5.4.5  # Menjaga versi cloud_firestore yang lebih baru
+  firebase_storage: ^12.3.5   # Menambahkan Firebase Storage untuk menyimpan gambar
+  image_picker: ^0.8.8        # Menambahkan Image Picker untuk memilih gambar dari galeri atau kamera
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.1
   rename: ^3.0.2
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icon/icon.png" # Pastikan path ini benar
+  image_path: "assets/icon/icon.png"
   min_sdk_android: 21
   web:
     generate: true
-    image_path: "assets/icon/icon.png" # Path ke ikon untuk web
+    image_path: "assets/icon/icon.png"
     background_color: "#FFFFFF"
     theme_color: "#000000"
   windows:
     generate: true
-    image_path: "assets/icon/icon.png" # Path ke ikon untuk Windows
+    image_path: "assets/icon/icon.png"
     icon_size: 48
   macos:
     generate: true
-    image_path: "assets/icon/icon.png" # Path ke ikon untuk macOS
+    image_path: "assets/icon/icon.png"
 
-flutter_lints: ^4.0.0
+flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true
-
   assets:
     - assets/image/logomasjid.png 
     - assets/icon/icon.png 
-    - assets/image/BG1.png 
-  
+    - assets/image/BG1.png

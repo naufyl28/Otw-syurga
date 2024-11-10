@@ -1,17 +1,24 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
-    namespace = "com.example.tubes_papb"
+    namespace = "com.otwsyurga.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
@@ -19,16 +26,25 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.tubes_papb"
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        applicationId = "com.otwsyurga.app"
+        minSdkVersion 23  // Mengubah minSdkVersion menjadi 23
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode flutter.versionCode
+        versionName flutter.versionName
+    }
+
+    signingConfigs {
+        release {
+            keyAlias = keystoreProperties['keyAlias']
+            keyPassword = keystoreProperties['keyPassword']
+            storeFile = keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword = keystoreProperties['storePassword']
+        }
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.debug
+            signingConfig = signingConfigs.release
         }
     }
 }
@@ -36,3 +52,14 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    implementation 'com.google.firebase:firebase-auth:21.0.5'  // Firebase Authentication
+    implementation 'com.google.firebase:firebase-firestore:24.0.0'  // Firebase Firestore
+    implementation 'com.google.firebase:firebase-storage:20.0.0'  // Firebase Storage
+    implementation 'com.google.firebase:firebase-core:21.1.0'  // Firebase Core
+    implementation "com.google.android.material:material:1.12.0"  // Material Design
+    // Tambahkan plugin atau dependencies lainnya sesuai kebutuhan
+}
+
+apply plugin: 'com.google.gms.google-services'  // Menambahkan plugin Google services

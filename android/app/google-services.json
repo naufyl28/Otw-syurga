@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "997667523753",
+    "project_id": "robotic-heaven-438406-e7",
+    "storage_bucket": "robotic-heaven-438406-e7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997667523753:android:0fa6bf52ef5facc993adb8",
+        "android_client_info": {
+          "package_name": "com.otwsyurga.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0RaiI0YBSsN5y_oza2yyUOwWnzGTyQAw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

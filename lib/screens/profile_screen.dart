@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String username = "Muhammad Naufal";
+    // Mengambil informasi pengguna yang sedang login
+    final User? user = FirebaseAuth.instance.currentUser;
+    String username = user?.displayName ?? 'Guest';
     int totalPoints = 100;
 
     List<Map<String, dynamic>> previousPoints = [
@@ -38,7 +41,7 @@ class ProfileScreen extends StatelessWidget {
         ),
         child: Center(
           child: Card(
-            elevation: 8, 
+            elevation: 8,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16), // Sudut bulat pada Card
             ),
@@ -47,11 +50,7 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  // Gambar profil
-                  CircleAvatar(
-                    radius: 70,
-                    backgroundImage: AssetImage('assets/image/profile.jpg'),
-                  ),
+                  // Removed profile picture section
                   const SizedBox(height: 20),
                   // Username
                   Text(
@@ -64,14 +63,14 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   // Total poin perolehan
                   Text(
-                    'Total Poin: $totalPoints',
+                    'Total Poin anda: $totalPoints',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(height: 20), 
+                  const SizedBox(height: 20),
                   // List hari-hari sebelumnya
                   Expanded(
                     child: ListView.builder(
